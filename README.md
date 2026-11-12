@@ -133,6 +133,7 @@ The skill keeps the `astra-orchestrator` name in every profile so the shared
 | 4 | `plus-max-2-subagents` | Luna max | Luna medium | Astra low | 2 |
 | 5 | `GPT6-SolMax-LunaMax` | Sol max | Luna max | Sol max | 4 |
 | 6 | `GPT6-SolMedium-LunaMax` | Sol medium | Luna max | Sol medium | 4 |
+| 7 | `GPT6-TerraMedium-LunaMax` | Terra medium | Luna max | Terra medium | 4 |
 
 All models above are GPT-6. Execution roles are explorer, worker, tester,
 and researcher; named roles pin their models and reasoning levels independently

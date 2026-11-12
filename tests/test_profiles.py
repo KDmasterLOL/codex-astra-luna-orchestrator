@@ -76,7 +76,7 @@ class SolProfileTests(unittest.TestCase):
                         command, input=f"{target}\n{choice}\n\n\n\n", text=True, capture_output=True
                     )
                     self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                    self.assertIn("Select Profile [1-6] (default 1):", result.stdout)
+                    self.assertIn("Select Profile [1-7] (default 1):", result.stdout)
                     self.assertIn(f"profile: {profile}", result.stdout)
                     self.assertIn(f") {profile} -", result.stdout)
                     source = ROOT / "profiles" / profile
@@ -90,6 +90,27 @@ class SolProfileTests(unittest.TestCase):
                             (Path(target) / component).read_text(),
                             (source_component / Path(*component.parts[1:])).read_text(),
                         )
+
+
+class TerraProfileTests(unittest.TestCase):
+    def test_terra_profile_and_installer(self):
+        directory = ROOT / "profiles" / "GPT6-TerraMedium-LunaMax"
+        config = tomllib.loads((directory / "codex/config.toml").read_text())
+        self.assertEqual((config["model"], config["model_reasoning_effort"]), ("gpt-6.1-terra", "medium"))
+        self.assertEqual(config["agents"]["default_subagent_model"], "gpt-6-luna")
+        for role in LUNA_ROLES:
+            agent = tomllib.loads((directory / "codex/agents" / f"{role}.toml").read_text())
+            self.assertEqual(agent["model"], "gpt-6-luna")
+        reviewer = tomllib.loads((directory / "codex/agents/reviewer.toml").read_text())
+        self.assertEqual(reviewer["model"], "gpt-6.1-terra")
+        installers = [["sh", str(ROOT / "setup.sh")]]
+        if shutil.which("pwsh"):
+            installers.append(["pwsh", "-NoProfile", "-File", str(ROOT / "setup.ps1")])
+        for command in installers:
+            with tempfile.TemporaryDirectory() as target:
+                result = subprocess.run(command, input=f"{target}\n7\n\n\n\n", text=True, capture_output=True)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual((Path(target) / ".codex/config.toml").read_text(), (directory / "codex/config.toml").read_text())
 
 
 class PreviousProfileTests(unittest.TestCase):
