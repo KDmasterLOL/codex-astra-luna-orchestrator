@@ -1,4 +1,4 @@
-name = "researcher"
+name = "terra-researcher"
 description = "Read-only technical research subagent. Use for version-specific APIs, framework behavior, external documentation, or dependency facts that should be verified."
 
 model = "gpt-6-luna"

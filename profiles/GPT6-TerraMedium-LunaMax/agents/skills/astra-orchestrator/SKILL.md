@@ -10,8 +10,8 @@ The user's explicit instructions take precedence over this skill.
 ## Topology
 
 - root: `gpt-6.1-terra` at `medium` reasoning
-- explorer, worker, tester, researcher: `gpt-6-luna` at `max` reasoning
-- reviewer: `gpt-6.1-terra` at `medium` reasoning, in an independent read-only context
+- terra-explorer, terra-worker, terra-tester, terra-researcher: `gpt-6-luna` at `max` reasoning
+- terra-reviewer: `gpt-6.1-terra` at `medium` reasoning, in an independent read-only context
 
 The role files in `.codex/agents/` pin these models and reasoning levels; generic subagents inherit the Luna defaults in `.codex/config.toml`. Do not change the root model from within a session.
 
@@ -19,7 +19,7 @@ The role files in `.codex/agents/` pin these models and reasoning levels; generi
 
 The root owns architecture, task breakdown, integration, and final verification. Keep genuinely small tasks root-only. For work spanning multiple files, independent workstreams, cross-component debugging, or useful independent review, delegate bounded tasks to specialized agents when available. If required delegation is unavailable, report that rather than claiming it happened.
 
-For each delegated task, specify the objective, scope, context, constraints, deliverable, and acceptance criteria. When spawning, select the named role and its pinned model; do not silently replace a Luna worker with the root. Use explorer for mapping code, worker for implementation, tester for verification, researcher for version-specific facts, and reviewer for independent post-change review. Do not let multiple workers edit the same files without explicit ownership boundaries.
+For each delegated task, specify the objective, scope, context, constraints, deliverable, and acceptance criteria. When spawning, select the named role and its pinned model; do not silently replace a Luna worker with the root. Use terra-explorer for mapping code, terra-worker for implementation, terra-tester for verification, terra-researcher for version-specific facts, and terra-reviewer for independent post-change review. Do not let multiple workers edit the same files without explicit ownership boundaries.
 
 Run independent tasks in parallel and serialize dependent work. Prefer exploration, architecture decision, bounded implementation, targeted testing, independent review when useful, then integration and final verification. Do not spawn every role mechanically. Report agent failures and resolve material findings before finishing.
 
